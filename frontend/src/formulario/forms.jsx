@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoDomingos from "./assets/logo_domingos_transparente.png";
-import "./App.css";
 
 const Home = () => {
   const [modoFormulario, setModoFormulario] = useState(false);
@@ -9,7 +8,7 @@ const Home = () => {
   return (
     <div className="promo-page">
       <motion.div
-        className={`ticket-container ${modoFormulario ? "expanded" : ""}`}
+        className="ticket-container"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -33,7 +32,7 @@ const Home = () => {
                 transition={{ duration: 0.4 }}
               >
                 <div className="ticket-title">
-                  <h1>INDIQUE E GANHE</h1>
+                  <h1>INDIQUE & EFETIVE</h1>
                 </div>
 
                 <div className="info-box">
@@ -61,53 +60,22 @@ const Home = () => {
                 key="formulario"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="split-area"
+                className="form-area"
               >
+                <form className="simple-form">
+                  <input type="text" placeholder="Seu nome" required />
+                  <input type="email" placeholder="Seu email" required />
+                  <button type="submit">Enviar</button>
+                </form>
 
-                {/* LADO ESQUERDO */}
-                <div className="split-left">
-                  <h2>Programa Cliente Parceiro 🤝</h2>
-                  <span className="sub-highlight">Indique e ganhe!</span>
-
-                  <p>
-                    Transforme suas indicações em recompensa.
-                    Sempre que um amigo fechar contrato com a Domingos, você recebe benefícios exclusivos.
-                  </p>
-
-                  <ul>
-                    <li>Cada indicação efetivada gera recompensa.</li>
-                    <li>Indique quantas pessoas quiser.</li>
-                    <li>A primeira mensalidade é revertida para você.</li>
-                  </ul>
-                  <button
-                    className="voltar-btn desktop"
-                    onClick={() => setModoFormulario(false)}
-                  >
-                    Voltar
-                  </button>
-                </div>
-
-                {/* LADO DIREITO */}
-                <div className="split-right">
-                  <form className="simple-form">
-                    <input type="text" placeholder="Seu nome" required />
-                    <input type="email" placeholder="Seu email" required />
-                    <button type="submit">Enviar Indicação</button>
-                  </form>
-                </div>
-
-                {/* BOTÃO VOLTAR AGORA FICA POR ÚLTIMO */}
                 <button
-                  className="voltar-btn mobile"
+                  className="voltar-btn"
                   onClick={() => setModoFormulario(false)}
                 >
                   Voltar
                 </button>
-
               </motion.div>
-
             )}
 
           </AnimatePresence>
