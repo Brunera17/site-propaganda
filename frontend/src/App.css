@@ -62,7 +62,7 @@
 
 .ticket-container.expanded::after {
   transform: translateY(-125%);
-  
+  bottom: -28%;
 }
 
 /* ========================= */
