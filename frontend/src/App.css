@@ -336,6 +336,7 @@
   }
   .ticket-container.expanded::after {
     transform: translateY(5%);
+    bottom: -60%;
   }
 
   .ticket-content {
