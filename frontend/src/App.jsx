@@ -77,16 +77,9 @@ const Home = () => {
             ) : (
 
               /* ================= FORM ================= */
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -30 }}
-                transition={{ duration: 0.4 }}
-                className="split-area"
-              >
+              <div className="split-area">
 
-                {/* LADO ESQUERDO */}
+                {/* LADO ESQUERDO (FIXO) */}
                 <div className="split-left">
                   <h2>Programa Cliente Parceiro 🤝</h2>
                   <span className="sub-highlight">Etapa {step} de 4</span>
@@ -95,6 +88,12 @@ const Home = () => {
                     Transforme suas indicações em recompensa.
                     Sempre que um amigo fechar contrato com a Domingos, você recebe benefícios exclusivos.
                   </p>
+
+                  <ul>
+                    <li>Cada indicação efetivada gera recompensa.</li>
+                    <li>Indique quantas pessoas quiser.</li>
+                    <li>A primeira mensalidade é revertida para você.</li>
+                  </ul>
 
                   <button
                     className="voltar-btn desktop"
@@ -110,97 +109,131 @@ const Home = () => {
                   </button>
                 </div>
 
-                {/* LADO DIREITO */}
+                {/* LADO DIREITO (ANIMADO) */}
                 <div className="split-right">
                   <form className="simple-form" onSubmit={handleSubmit}>
 
-                    {/* ETAPA 1 */}
-                    {step === 1 && (
-                      <>
-                        <input
-                          type="text"
-                          placeholder="Seu nome"
-                          required
-                          onChange={(e) =>
-                            setFormData({ ...formData, nome: e.target.value })
-                          }
-                        />
-                        <input
-                          type="email"
-                          placeholder="Seu email"
-                          required
-                          onChange={(e) =>
-                            setFormData({ ...formData, email: e.target.value })
-                          }
-                        />
-                      </>
-                    )}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={step}
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
+                      >
 
-                    {/* ETAPA 2 */}
-                    {step === 2 && (
-                      <>
-                        <p>Quais serviços você tem interesse?</p>
-
-                        {["Contabilidade", "Consultoria", "Jurídico"].map((item) => (
-                          <label key={item}>
+                        {/* ETAPA 1 */}
+                        {step === 1 && (
+                          <>
                             <input
-                              type="checkbox"
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setFormData({
-                                    ...formData,
-                                    interesses: [...formData.interesses, item],
-                                  });
-                                } else {
-                                  setFormData({
-                                    ...formData,
-                                    interesses: formData.interesses.filter(i => i !== item),
-                                  });
-                                }
-                              }}
+                              type="text"
+                              placeholder="Seu nome"
+                              required
+                              value={formData.nome}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  nome: e.target.value
+                                }))
+                              }
                             />
-                            {item}
-                          </label>
-                        ))}
-                      </>
-                    )}
+                            <input
+                              type="email"
+                              placeholder="Seu email"
+                              required
+                              value={formData.email}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  email: e.target.value
+                                }))
+                              }
+                            />
+                          </>
+                        )}
 
-                    {/* ETAPA 3 */}
-                    {step === 3 && (
-                      <input
-                        type="text"
-                        placeholder="Quem você está indicando?"
-                        onChange={(e) =>
-                          setFormData({ ...formData, indicacao: e.target.value })
-                        }
-                      />
-                    )}
+                        {/* ETAPA 2 */}
+                        {step === 2 && (
+                          <>
+                            <p>Quais serviços você tem interesse?</p>
 
-                    {/* ETAPA 4 */}
-                    {step === 4 && (
-                      <input
-                        type="text"
-                        placeholder="Telefone ou WhatsApp"
-                        onChange={(e) =>
-                          setFormData({ ...formData, contato: e.target.value })
-                        }
-                      />
-                    )}
+                            {["Contabilidade", "Consultoria", "Jurídico"].map((item) => (
+                              <label key={item}>
+                                <input
+                                  type="checkbox"
+                                  checked={formData.interesses.includes(item)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setFormData((prev) => ({
+                                        ...prev,
+                                        interesses: [...prev.interesses, item],
+                                      }));
+                                    } else {
+                                      setFormData((prev) => ({
+                                        ...prev,
+                                        interesses: prev.interesses.filter(i => i !== item),
+                                      }));
+                                    }
+                                  }}
+                                />
+                                {item}
+                              </label>
+                            ))}
+                          </>
+                        )}
+
+                        {/* ETAPA 3 */}
+                        {step === 3 && (
+                          <input
+                            type="text"
+                            placeholder="Quem você está indicando?"
+                            value={formData.indicacao}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                indicacao: e.target.value
+                              }))
+                            }
+                          />
+                        )}
+
+                        {/* ETAPA 4 */}
+                        {step === 4 && (
+                          <input
+                            type="text"
+                            placeholder="Telefone ou WhatsApp"
+                            value={formData.contato}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                contato: e.target.value
+                              }))
+                            }
+                          />
+                        )}
+
+                      </motion.div>
+                    </AnimatePresence>
 
                     {/* BOTÃO */}
                     <button
                       className="cta-button submit-btn"
                       type={step === 4 ? "submit" : "button"}
-                      onClick={step < 4 ? nextStep : undefined}
+                      onClick={() => {
+                        if (step === 1 && (!formData.nome || !formData.email)) return;
+                        if (step === 2 && formData.interesses.length === 0) return;
+                        if (step === 3 && !formData.indicacao) return;
+
+                        if (step < 4) nextStep();
+                      }}
                     >
                       <span className="btn-content">
-
                         <span className="text-wrapper">
                           {step === 4 ? "Enviar Indicação" : "Próximo"}
                         </span>
 
                         <svg
-                          className={`icon ${step < 4 ? "rotate" : ""}`}
+                          className="icon"
                           width="18"
                           height="18"
                           viewBox="0 0 24 24"
@@ -213,7 +246,6 @@ const Home = () => {
                           <path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
                           <path d="M6 12h16" />
                         </svg>
-
                       </span>
                     </button>
 
@@ -234,7 +266,7 @@ const Home = () => {
                   Voltar
                 </button>
 
-              </motion.div>
+              </div>
             )}
 
           </AnimatePresence>
