@@ -5,6 +5,7 @@ import "./App.css";
 
 const Home = () => {
   const [modoFormulario, setModoFormulario] = useState(false);
+  const [hoverBotao, setHoverBotao] = useState(false);
 
   return (
     <div className="promo-page">
@@ -94,7 +95,36 @@ const Home = () => {
                   <form className="simple-form">
                     <input type="text" placeholder="Seu nome" required />
                     <input type="email" placeholder="Seu email" required />
-                    <button type="submit">Enviar Indicação</button>
+                    <button
+                      className="cta-button submit-btn"
+                      type="submit"
+                      onMouseEnter={() => setHoverBotao(true)}
+                      onMouseLeave={() => setHoverBotao(false)}
+                    >
+                      <span className="btn-content">
+
+                        <span className="text-wrapper">
+                          {hoverBotao ? "Próximo" : "Enviar Indicação"}
+                        </span>
+
+                        <svg
+                          className={`icon ${hoverBotao ? "rotate" : ""}`}
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
+                          <path d="M6 12h16" />
+                        </svg>
+
+                      </span>
+                    </button>
+
                   </form>
                 </div>
 
