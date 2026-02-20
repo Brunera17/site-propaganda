@@ -191,14 +191,22 @@ const Home = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
               >
+                
                 <div className="ticket-title">
                   <h1>INDIQUE E GANHE</h1>
                 </div>
-
+                <div className="title-box">
+                  <p>
+                    Programa Cliente Parceiro 🤝
+                  </p>
+                </div>
                 <div className="info-box">
                   <p>
-                    É muito simples, basta indicar uma ou mais empresas.
-                    Ele efetivando com a Domingos, o primeiro honorário que ele pagar é <strong>SEU!</strong>
+                    É muito simples: indique uma ou mais empresas.
+                  </p>
+                  <p>
+                    Fechou com a Domingos?
+                    A primeira mensalidade de honorário paga é <strong>100% SUA!</strong>
                   </p>
                 </div>
 
