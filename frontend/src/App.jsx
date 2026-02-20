@@ -5,7 +5,23 @@ import "./App.css";
 
 const Home = () => {
   const [modoFormulario, setModoFormulario] = useState(false);
-  const [hoverBotao, setHoverBotao] = useState(false);
+  const [step, setStep] = useState(1);
+
+  const [formData, setFormData] = useState({
+    nome: "",
+    email: "",
+    interesses: [],
+    indicacao: "",
+    contato: ""
+  });
+
+  const nextStep = () => setStep((prev) => prev + 1);
+  const prevStep = () => setStep((prev) => prev - 1);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
 
   return (
     <div className="promo-page">
@@ -17,7 +33,7 @@ const Home = () => {
       >
         <div className="ticket-content">
 
-          {/* LOGO (sempre visível) */}
+          {/* LOGO */}
           <div className="ticket-header">
             <div className="logo">
               <img src={logoDomingos} alt="Domingos Contabilidade" />
@@ -26,6 +42,7 @@ const Home = () => {
 
           <AnimatePresence mode="wait">
 
+            {/* ================= LANDING ================= */}
             {!modoFormulario ? (
               <motion.div
                 key="conteudo"
@@ -58,33 +75,36 @@ const Home = () => {
                 </div>
               </motion.div>
             ) : (
+
+              /* ================= FORM ================= */
               <motion.div
-                key="formulario"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
+                key={step}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.4 }}
                 className="split-area"
               >
 
                 {/* LADO ESQUERDO */}
                 <div className="split-left">
                   <h2>Programa Cliente Parceiro 🤝</h2>
-                  <span className="sub-highlight">Indique e ganhe!</span>
+                  <span className="sub-highlight">Etapa {step} de 4</span>
 
                   <p>
                     Transforme suas indicações em recompensa.
                     Sempre que um amigo fechar contrato com a Domingos, você recebe benefícios exclusivos.
                   </p>
 
-                  <ul>
-                    <li>Cada indicação efetivada gera recompensa.</li>
-                    <li>Indique quantas pessoas quiser.</li>
-                    <li>A primeira mensalidade é revertida para você.</li>
-                  </ul>
                   <button
                     className="voltar-btn desktop"
-                    onClick={() => setModoFormulario(false)}
+                    onClick={() => {
+                      if (step === 1) {
+                        setModoFormulario(false);
+                      } else {
+                        prevStep();
+                      }
+                    }}
                   >
                     Voltar
                   </button>
@@ -92,23 +112,95 @@ const Home = () => {
 
                 {/* LADO DIREITO */}
                 <div className="split-right">
-                  <form className="simple-form">
-                    <input type="text" placeholder="Seu nome" required />
-                    <input type="email" placeholder="Seu email" required />
+                  <form className="simple-form" onSubmit={handleSubmit}>
+
+                    {/* ETAPA 1 */}
+                    {step === 1 && (
+                      <>
+                        <input
+                          type="text"
+                          placeholder="Seu nome"
+                          required
+                          onChange={(e) =>
+                            setFormData({ ...formData, nome: e.target.value })
+                          }
+                        />
+                        <input
+                          type="email"
+                          placeholder="Seu email"
+                          required
+                          onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                          }
+                        />
+                      </>
+                    )}
+
+                    {/* ETAPA 2 */}
+                    {step === 2 && (
+                      <>
+                        <p>Quais serviços você tem interesse?</p>
+
+                        {["Contabilidade", "Consultoria", "Jurídico"].map((item) => (
+                          <label key={item}>
+                            <input
+                              type="checkbox"
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData({
+                                    ...formData,
+                                    interesses: [...formData.interesses, item],
+                                  });
+                                } else {
+                                  setFormData({
+                                    ...formData,
+                                    interesses: formData.interesses.filter(i => i !== item),
+                                  });
+                                }
+                              }}
+                            />
+                            {item}
+                          </label>
+                        ))}
+                      </>
+                    )}
+
+                    {/* ETAPA 3 */}
+                    {step === 3 && (
+                      <input
+                        type="text"
+                        placeholder="Quem você está indicando?"
+                        onChange={(e) =>
+                          setFormData({ ...formData, indicacao: e.target.value })
+                        }
+                      />
+                    )}
+
+                    {/* ETAPA 4 */}
+                    {step === 4 && (
+                      <input
+                        type="text"
+                        placeholder="Telefone ou WhatsApp"
+                        onChange={(e) =>
+                          setFormData({ ...formData, contato: e.target.value })
+                        }
+                      />
+                    )}
+
+                    {/* BOTÃO */}
                     <button
                       className="cta-button submit-btn"
-                      type="submit"
-                      onMouseEnter={() => setHoverBotao(true)}
-                      onMouseLeave={() => setHoverBotao(false)}
+                      type={step === 4 ? "submit" : "button"}
+                      onClick={step < 4 ? nextStep : undefined}
                     >
                       <span className="btn-content">
 
                         <span className="text-wrapper">
-                          {hoverBotao ? "Próximo" : "Enviar Indicação"}
+                          {step === 4 ? "Enviar Indicação" : "Próximo"}
                         </span>
 
                         <svg
-                          className={`icon ${hoverBotao ? "rotate" : ""}`}
+                          className={`icon ${step < 4 ? "rotate" : ""}`}
                           width="18"
                           height="18"
                           viewBox="0 0 24 24"
@@ -128,16 +220,21 @@ const Home = () => {
                   </form>
                 </div>
 
-                {/* BOTÃO VOLTAR AGORA FICA POR ÚLTIMO */}
+                {/* VOLTAR MOBILE */}
                 <button
                   className="voltar-btn mobile"
-                  onClick={() => setModoFormulario(false)}
+                  onClick={() => {
+                    if (step === 1) {
+                      setModoFormulario(false);
+                    } else {
+                      prevStep();
+                    }
+                  }}
                 >
                   Voltar
                 </button>
 
               </motion.div>
-
             )}
 
           </AnimatePresence>
