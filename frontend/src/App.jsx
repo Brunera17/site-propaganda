@@ -197,7 +197,7 @@ const Home = () => {
 
                 <div className="info-box">
                   <p>
-                    É muito simples, basta indicar um ou mais amigos.
+                    É muito simples, basta indicar uma ou mais empresas.
                     Ele efetivando com a Domingos, o primeiro honorário que ele pagar é <strong>SEU!</strong>
                   </p>
                 </div>
