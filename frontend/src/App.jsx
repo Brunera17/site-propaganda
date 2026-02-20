@@ -54,14 +54,14 @@ const Home = () => {
 
   const validateStep = (currentStep) => {
     const newErrors = {};
-    
+
     if (currentStep === 1) {
       if (!formData.nome.trim()) {
         newErrors.nome = "Nome é obrigatório";
       } else if (formData.nome.trim().length < 3) {
         newErrors.nome = "Nome deve ter pelo menos 3 caracteres";
       }
-      
+
       if (!formData.email.trim()) {
         newErrors.email = "Email é obrigatório";
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -74,15 +74,15 @@ const Home = () => {
         newErrors.nome = "Nome deve ter pelo menos 3 caracteres";
       }
     }
-    
+
     if (currentStep === 2 && formData.interesses.length === 0) {
       newErrors.interesses = "Selecione pelo menos um serviço";
     }
-    
+
     if (currentStep === 3 && !formData.indicacao.trim()) {
       newErrors.indicacao = "Nome do indicado é obrigatório";
     }
-    
+
     if (currentStep === 4) {
       const telefone = formData.contato?.trim();
       const emailAmigo = formData.emailamigo?.trim();
@@ -104,7 +104,7 @@ const Home = () => {
         newErrors.emailamigo = "Email inválido";
       }
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -115,7 +115,7 @@ const Home = () => {
       setErrors({});
     }
   };
-  
+
   const prevStep = () => {
     setStep((prev) => prev - 1);
     setErrors({});
@@ -123,20 +123,20 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateStep(4)) return;
-    
+
     setSubmitting(true);
-    
+
     try {
-      // Simula envio para backend
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      console.log('✅ Dados enviados:', formData);
-      
+      await fetch("https://script.google.com/macros/s/AKfycbx3tOAQU0Zq6pvalT3G0fblEv26lbwnGTJUyOPEKkhZG9HZ7ICYNMU1t25SQPwOct4m/exec", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+
       // Mostra mensagem de sucesso
       setShowSuccess(true);
-      
+
       // Reset após 3s
       setTimeout(() => {
         setFormData({
@@ -208,7 +208,7 @@ const Home = () => {
                 >
                   <span>INDIQUE AGORA</span>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                    <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </button>
 
@@ -227,10 +227,10 @@ const Home = () => {
                 <div className="split-left">
                   <h2>Programa Cliente Parceiro 🤝</h2>
                   <span className="sub-highlight">Etapa {step} de 4</span>
-                  
+
                   {/* Barra de progresso */}
                   <div className="progress-bar">
-                    <motion.div 
+                    <motion.div
                       className="progress-fill"
                       initial={{ width: 0 }}
                       animate={{ width: `${getStepProgress()}%` }}
@@ -306,7 +306,7 @@ const Home = () => {
                                 />
                                 {errors.email && <span className="error-message">{errors.email}</span>}
                               </div>
-                              
+
                               <div className="input-group">
                                 <input
                                   type="text"
@@ -414,10 +414,10 @@ const Home = () => {
                                   }}
                                 />
                               </div>
-                              
+
                               <AnimatePresence>
                                 {showSuccess && (
-                                  <motion.div 
+                                  <motion.div
                                     className="success-message"
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
